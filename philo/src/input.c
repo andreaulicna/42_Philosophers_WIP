@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/08 15:03:03 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/11 22:36:00 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,31 +84,6 @@ static void	no_valid_argumets(void)
 }
 
 /**
- * @brief	This function reads the comman-line arguments, converts them into
- * numbers and stores them in the input struct.
- * 
- * @param	input	struct for input
- * @param	argc
- * @param	argv
-*/
-
-void	read_input(t_input *input, int argc, char **argv)
-{
-	input->num_philos = ft_atoi(argv[1]);
-	input->time_to_die = ft_atoi(argv[2]);
-	input->time_to_eat = ft_atoi(argv[3]);
-	input->time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		input->must_eat = ft_atoi(argv[5]);
-	else
-		input->must_eat = 0;
-	if (input->num_philos < 1 || input->num_philos > 200
-			|| input->time_to_die <= 0 || input->time_to_eat <= 0
-			|| input->time_to_sleep <= 0 || input->must_eat <= -1)
-		no_valid_argumets();
-}
-
-/**
  * @brief	This function checks whether the provided command-line arguments
  * include only numerical characters. This function is called before
  * the red_input() function to ensure that ft_atoi doesn't mistakenly process
@@ -135,4 +110,29 @@ void	check_input_for_numbers(int argc, char **argv)
 		}
 		i++;
 	}
+}
+
+/**
+ * @brief	This function reads the comman-line arguments, converts them into
+ * numbers and stores them in the input struct.
+ * 
+ * @param	input	struct for input
+ * @param	argc
+ * @param	argv
+*/
+
+void	read_input(t_input *input, int argc, char **argv)
+{
+	input->num_philos = ft_atoi(argv[1]);
+	input->time_to_die = ft_atoi(argv[2]);
+	input->time_to_eat = ft_atoi(argv[3]);
+	input->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		input->must_eat = ft_atoi(argv[5]);
+	else
+		input->must_eat = 0;
+	if (input->num_philos < 1 || input->num_philos > 200
+			|| input->time_to_die <= 0 || input->time_to_eat <= 0
+			|| input->time_to_sleep <= 0 || input->must_eat <= -1)
+		no_valid_argumets();
 }

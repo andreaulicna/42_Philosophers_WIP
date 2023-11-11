@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/08 14:44:16 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/11 22:56:43 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+
+# define DIED "has died"
 
 typedef struct s_input
 {
@@ -27,6 +31,9 @@ typedef struct s_input
 
 typedef struct s_philo
 {
+	int	id;
+	int	meals_count;
+	unsigned long	last_meal;
 
 } t_philo;
 
