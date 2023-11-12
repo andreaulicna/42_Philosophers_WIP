@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/11 23:01:27 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/12 13:55:50 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,22 @@
 
 int	init_party(t_party *party, t_input *input)
 {
+	int	i;
+
 	party->philos = (t_philo *) malloc(sizeof(t_philo) * input->num_philos);
 	if (!party->philos)
-		return (-1);
+		return (error('A'));
+	i = 0;
+	while (i < input->num_philos)
+	{
+		party->philos[i].id = i;
+		party->philos[i].meals_count = 0;
+		party->philos[i].last_meal = 0;
+		party->philos[i].left_fork = 1;
+		party->philos[i].right_fork = 1;
+		i++;
+	}
+	
 	return (0);
 }
 
@@ -25,6 +38,11 @@ void	only_one(t_input *input)
 	usleep(input->time_to_die * 1000);
 	printf("%-5d %-1d %s\n", input->time_to_die, input->num_philos, DIED);
 	exit(0);
+}
+
+void	free_party(t_party *party)
+{
+	free(party->philos);
 }
 
 unsigned long	get_time(void)
@@ -52,5 +70,6 @@ int	main(int argc, char **argv)
 	}
 	else
 		printf("Input error: Wrong number of arguments received.\n");
+	free_party(&party);
 	return (0);
 }
