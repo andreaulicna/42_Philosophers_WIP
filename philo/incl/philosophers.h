@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/12 13:55:41 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/13 08:40:36 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_input
 
 typedef struct s_philo
 {
+	pthread_t		thread;
 	int	id;
 	int	meals_count;
 	unsigned long	last_meal;
@@ -44,7 +45,7 @@ typedef struct s_party
 {
  t_input *input;
  t_philo *philos;
- 
+	unsigned long	meet;
 } t_party;
 
 // input.c
