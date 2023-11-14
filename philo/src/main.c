@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/13 21:19:26 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/14 20:22:00 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ unsigned long	get_time(void)
 	return (in_ms);
 }
 
-int	init_party(t_party *party, t_input *input)
+int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 {
 	int	i;
 
@@ -42,6 +42,7 @@ int	init_party(t_party *party, t_input *input)
 			party->philos[i].left_fork = 1;
 		i++;
 	}
+	party->mutexes = mutexes;
 	party->meet = get_time();
 	
 	return (0);
@@ -59,10 +60,19 @@ void	free_party(t_party *party)
 	free(party->philos);
 }
 
-void	*perform_routine(void *party)
+void	print_message(char *msg)
 {
-	(void) party;
-	printf("%-5ld %-1d %s\n", get_time(), 2, "runs.");
+	printf("Hej: %s", msg);
+}
+
+void	*perform_routine(void *param)
+{
+	t_party	*party;
+
+	party = param;
+	pthread_mutex_lock(&party->mutexes->log);
+	print_message("hou\n");
+	pthread_mutex_unlock(&party->mutexes->log);
 	return (NULL);
 }
 
@@ -85,11 +95,18 @@ void handle_threads(t_party *party)
 		pthread_join(party->philos[i].thread, NULL);
 		i++;
 	}
+	pthread_mutex_destroy(&party->mutexes->log);
+}
+
+void	init_mutexes(t_mutex *mutexes)
+{
+	pthread_mutex_init(&mutexes->log, NULL);
 }
 
 int	main(int argc, char **argv)
 {
 	t_input	input;
+	t_mutex	mutexes;
 	t_party	party;
 
 	if (argc == 5 || argc == 6)
@@ -98,7 +115,8 @@ int	main(int argc, char **argv)
 		read_input(&input, argc, argv);
 		if (input.num_philos == 1)
 			only_one(&input);
-		init_party(&party, &input);
+		init_mutexes(&mutexes);
+		init_party(&party, &input, &mutexes);
 		handle_threads(&party);
 		free_party(&party);
 	}

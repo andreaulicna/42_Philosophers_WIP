@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/13 08:40:36 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/14 20:03:20 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,18 @@ typedef struct s_philo
 	unsigned long	last_meal;
 	int	left_fork;
 	int	right_fork;
-
 } t_philo;
+
+typedef struct s_mutex
+{
+	pthread_mutex_t	log;
+}	t_mutex;
 
 typedef struct s_party
 {
- t_input *input;
- t_philo *philos;
+	t_input *input;
+	t_philo *philos;
+	t_mutex	*mutexes;
 	unsigned long	meet;
 } t_party;
 
