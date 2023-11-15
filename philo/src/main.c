@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/14 20:22:00 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/15 09:57:40 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 	if (!party->philos)
 		return (error('A'));
 	i = 0;
+	party->mutexes = mutexes;
 	while (i < input->num_philos)
 	{
 		party->philos[i].id = i;
+		party->philos[i].alive = 0;
 		party->philos[i].meals_count = 0;
 		party->philos[i].last_meal = 0;
 		party->philos[i].right_fork = i;
@@ -41,8 +43,8 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 		if (party->philos[i].left_fork > input->num_philos)
 			party->philos[i].left_fork = 1;
 		i++;
+		party->philos[i].mutexes = mutexes;
 	}
-	party->mutexes = mutexes;
 	party->meet = get_time();
 	
 	return (0);
@@ -60,19 +62,24 @@ void	free_party(t_party *party)
 	free(party->philos);
 }
 
-void	print_message(char *msg)
+void	thinking(t_philo *philo)
 {
-	printf("Hej: %s", msg);
+	pthread_mutex_lock(&philo->mutexes->log);
+	printf("jou\n");
+	pthread_mutex_unlock(&philo->mutexes->log);
+	philo->alive = 1;
 }
 
 void	*perform_routine(void *param)
 {
-	t_party	*party;
+	t_philo	*philo;
 
-	party = param;
-	pthread_mutex_lock(&party->mutexes->log);
-	print_message("hou\n");
-	pthread_mutex_unlock(&party->mutexes->log);
+	philo = param;
+	while (philo->alive != 1)
+	{
+		thinking(philo);
+		printf("tu\n");
+	}
 	return (NULL);
 }
 
