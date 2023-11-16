@@ -6,7 +6,7 @@
 #    By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 13:21:58 by aulicna           #+#    #+#              #
-#    Updated: 2023/11/14 20:01:28 by aulicna          ###   ########.fr        #
+#    Updated: 2023/11/16 21:15:40 by aulicna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ = $(SRC:.c=.o)
 
 HEADER = incl/philosophers.h
 
-CFLAGS = -Wall -Werror -Wextra -pthread
+CFLAGS = -Wall -Werror -Wextra
 
 GCC = gcc
 
@@ -31,7 +31,7 @@ all: $(NAME)
 	$(GCC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ) $(HEADER)
-	$(GCC) $(CFLAGS) -o $@ $^
+	$(GCC) $(CFLAGS) -o $@ $^ -lpthread
 
 clean:
 	@rm -f $(OBJ)

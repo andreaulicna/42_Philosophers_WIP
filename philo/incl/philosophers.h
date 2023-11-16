@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/15 09:39:04 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/16 21:25:49 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_philo
 	int	left_fork;
 	int	right_fork;
 	t_mutex	*mutexes;
+	t_input	*input;
 } t_philo;
 
 typedef struct s_party

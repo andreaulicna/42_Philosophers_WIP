@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/15 09:57:40 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/11/16 21:37:41 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 		party->philos[i].left_fork = i + 1;
 		if (party->philos[i].left_fork > input->num_philos)
 			party->philos[i].left_fork = 1;
-		i++;
+		party->philos[i].input = input;
 		party->philos[i].mutexes = mutexes;
+		i++;
 	}
 	party->meet = get_time();
 	
@@ -65,7 +66,7 @@ void	free_party(t_party *party)
 void	thinking(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->mutexes->log);
-	printf("jou\n");
+	printf("%-5ld %-1d %s\n", get_time(), philo->id, "is thinking");
 	pthread_mutex_unlock(&philo->mutexes->log);
 	philo->alive = 1;
 }
@@ -73,12 +74,14 @@ void	thinking(t_philo *philo)
 void	*perform_routine(void *param)
 {
 	t_philo	*philo;
+	int	i;
 
 	philo = param;
+	i = 0;
 	while (philo->alive != 1)
 	{
 		thinking(philo);
-		printf("tu\n");
+		i++;
 	}
 	return (NULL);
 }
@@ -86,6 +89,7 @@ void	*perform_routine(void *param)
 void handle_threads(t_party *party)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	party->meet = get_time();
@@ -96,11 +100,11 @@ void handle_threads(t_party *party)
 				&party->philos[i]);
 		i++;
 	}
-	i = 0;
-	while (i < party->input->num_philos)
+	j = 0;
+	while (j < party->input->num_philos)
 	{
-		pthread_join(party->philos[i].thread, NULL);
-		i++;
+		pthread_join(party->philos[j].thread, NULL);
+		j++;
 	}
 	pthread_mutex_destroy(&party->mutexes->log);
 }
