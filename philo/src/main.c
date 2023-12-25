@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/25 17:59:32 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/25 20:27:07 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		printf("Input error: Wrong number of arguments received.\n");
+		printf("Input error: Wrong number of arguments received.\n\n");
 		printf("Correct usage: ./philo number_of_philosophers time_to_die "
 				"time_to_eat time_to_sleep " 
 				"[number_of_times_each_philosopher_must_eat]\n\n");
