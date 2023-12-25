@@ -6,21 +6,21 @@
 #    By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 13:21:58 by aulicna           #+#    #+#              #
-#    Updated: 2023/11/16 21:15:40 by aulicna          ###   ########.fr        #
+#    Updated: 2023/12/25 18:13:53 by aulicna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 SRC = src/main.c \
-						src/input.c \
-						src/error.c
+		src/input.c \
+		src/error.c
 
 OBJ = $(SRC:.c=.o)
 
 HEADER = incl/philosophers.h
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
 
 GCC = gcc
 

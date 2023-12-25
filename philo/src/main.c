@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/16 21:37:41 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/25 17:59:32 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 	{
 		party->philos[i].id = i;
 		party->philos[i].alive = 0;
+		party->philos[i].eat_rn = 0;
 		party->philos[i].meals_count = 0;
 		party->philos[i].last_meal = 0;
 		party->philos[i].right_fork = i;
@@ -46,7 +47,6 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 		party->philos[i].mutexes = mutexes;
 		i++;
 	}
-	party->meet = get_time();
 	
 	return (0);
 }
@@ -63,12 +63,21 @@ void	free_party(t_party *party)
 	free(party->philos);
 }
 
-void	thinking(t_philo *philo)
+void	think(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->mutexes->log);
-	printf("%-5ld %-1d %s\n", get_time(), philo->id, "is thinking");
+	printf("%-5ld %-1d %s\n", get_time() - philo->input->meet, philo->id,
+		"is thinking");
 	pthread_mutex_unlock(&philo->mutexes->log);
 	philo->alive = 1;
+}
+
+void	eat(t_philo *philo)
+{
+	philo->eat_rn = 0;
+	printf("%-5ld %-1d %s\n", get_time() - philo->input->meet, philo->id,
+		"is eating");
+	
 }
 
 void	*perform_routine(void *param)
@@ -78,9 +87,11 @@ void	*perform_routine(void *param)
 
 	philo = param;
 	i = 0;
+	if (philo->id % 2 == 0)
+		eat(philo);
 	while (philo->alive != 1)
 	{
-		thinking(philo);
+		think(philo);
 		i++;
 	}
 	return (NULL);
@@ -92,7 +103,6 @@ void handle_threads(t_party *party)
 	int	j;
 
 	i = 0;
-	party->meet = get_time();
 	while(i < party->input->num_philos)
 	{
 		party->philos[i].last_meal = get_time();
@@ -132,6 +142,11 @@ int	main(int argc, char **argv)
 		free_party(&party);
 	}
 	else
+	{
 		printf("Input error: Wrong number of arguments received.\n");
+		printf("Correct usage: ./philo number_of_philosophers time_to_die "
+				"time_to_eat time_to_sleep " 
+				"[number_of_times_each_philosopher_must_eat]\n\n");
+	}
 	return (0);
 }
