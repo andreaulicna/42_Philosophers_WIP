@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 15:19:18 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/27 22:02:30 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,22 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-# define DIED "died"
-# define ERROR_MALLOC 2
+typedef enum s_erors
+{
+	ERROR_MALLOC = 2,
+	ERROR_MUTEX,
+	ERROR_THREAD,
+}	t_errors;
+
+typedef enum s_state
+{
+	LEFT_FORK = 1,
+	RIGHT_FORK,
+	EAT,
+	SLEEP,
+	THINK,
+	DIED
+}	t_state;
 
 typedef struct s_input
 {
@@ -35,6 +49,7 @@ typedef struct s_input
 typedef struct s_mutex
 {
 	pthread_mutex_t	log;
+	pthread_mutex_t *forks;
 }	t_mutex;
 
 typedef struct s_philo
@@ -44,7 +59,7 @@ typedef struct s_philo
 	int	alive;
 	int	eat_rn;
 	int	meals_count;
-	unsigned long	last_meal;
+	int	last_meal;
 	int	left_fork;
 	int	right_fork;
 	t_mutex	*mutexes;
@@ -56,6 +71,8 @@ typedef struct s_party
 	t_input	*input;
 	t_philo	**philos;
 	t_mutex	*mutexes;
+	pthread_t	thread;
+
 } t_party;
 
 // input.c
@@ -63,14 +80,22 @@ void	read_input(t_input *input, int argc, char **argv);
 void	check_input_for_numbers(int argc, char **argv);
 
 // init.c
-void	init_mutexes(t_mutex *mutexes);
+int	init_mutexes(t_mutex *mutexes, int num_philos);
 int	init_party(t_party *party, t_input *input, t_mutex *mutexes);
 
+// log.c
+void    log_state_change(t_philo *philo, t_state state);
+char    *get_state_change(t_state state);
+
 // time.c
-int	get_time_to_print(int meet);
 int	get_time(void);
+int	get_time_to_print(int meet);
+//unsigned long	get_time(void);
 
 // error.c
-int	error(int error);
+int	error(int error, t_party *party);
+
+// free.c
+void	free_party(t_party *party);
 
 #endif

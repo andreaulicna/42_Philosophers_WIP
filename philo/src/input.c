@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 15:11:23 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/27 21:37:20 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	read_input(t_input *input, int argc, char **argv)
 	if (argc == 6)
 		input->must_eat = ft_atoi(argv[5]);
 	else
-		input->must_eat = 0;
+		input->must_eat = -1;
 	if (input->num_philos < 1 || input->num_philos > 200
 			|| input->time_to_die <= 0 || input->time_to_eat <= 0
 			|| input->time_to_sleep <= 0 || input->must_eat <= -1)

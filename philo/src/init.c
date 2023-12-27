@@ -6,15 +6,29 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 14:36:07 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 15:23:44 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/27 21:23:03 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../incl/philosophers.h"
 
-void	init_mutexes(t_mutex *mutexes)
+int	init_mutexes(t_mutex *mutexes, int num_philos)
 {
-	pthread_mutex_init(&mutexes->log, NULL);
+    int i;
+
+	if (pthread_mutex_init(&mutexes->log, NULL))
+        return (error(ERROR_MUTEX, NULL));
+    mutexes->forks = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t) * num_philos);
+    if (!mutexes->forks)
+        return(error(ERROR_MALLOC, NULL));
+    i = 0;
+    while (i < num_philos)
+    {
+        if (pthread_mutex_init(&mutexes->forks[i], NULL))
+            return (error(ERROR_MUTEX, NULL));
+        i++;
+    }
+    return (EXIT_SUCCESS);
 }
 
 int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
@@ -24,14 +38,14 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 	party->input = input;
 	party->philos = (t_philo **) malloc(sizeof(t_philo *) * input->num_philos);
 	if (!party->philos)
-		return (error(ERROR_MALLOC));
+		return (error(ERROR_MALLOC, NULL));
 	i = 0;
 	party->mutexes = mutexes;
 	while (i < input->num_philos)
 	{
         party->philos[i] = (t_philo *) malloc (sizeof(t_philo));
         if (!party->philos[i])
-		    return (error(ERROR_MALLOC));
+		    return (error(ERROR_MALLOC, NULL));
 		party->philos[i]->id = i;
 		party->philos[i]->alive = 0;
 		party->philos[i]->eat_rn = 0;
@@ -45,5 +59,5 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 		party->philos[i]->mutexes = mutexes;
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

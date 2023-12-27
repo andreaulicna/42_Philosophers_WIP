@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:54:45 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 14:52:47 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/27 18:01:14 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,15 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
-int	error(int error)
+int	error(int error, t_party *party)
 {
-	if (error == 2)
+	if (party)
+		free_party(party);
+	if (error == ERROR_MALLOC)
 		ft_putstr_fd("Error: Encountered memory allocation error.\n", 2);
+	else if (error == ERROR_MUTEX)
+		ft_putstr_fd("Error: Encountered mutex creation error.\n", 2);
+	else if (error == ERROR_THREAD)
+		ft_putstr_fd("Error: Encountered thread creation error.\n", 2);
 	return (error);
 }
