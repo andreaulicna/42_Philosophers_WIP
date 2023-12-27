@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/11/18 17:55:53 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/27 15:19:18 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <pthread.h>
 
 # define DIED "died"
+# define ERROR_MALLOC 2
 
 typedef struct s_input
 {
@@ -28,7 +29,7 @@ typedef struct s_input
 	int time_to_eat;
 	int time_to_sleep;
 	int	must_eat;
-	unsigned long	meet;
+	int		meet;
 } t_input;
 
 typedef struct s_mutex
@@ -52,19 +53,24 @@ typedef struct s_philo
 
 typedef struct s_party
 {
-	t_input *input;
-	t_philo *philos;
+	t_input	*input;
+	t_philo	**philos;
 	t_mutex	*mutexes;
 } t_party;
-
-// main.c
-unsigned long	get_time(void);
 
 // input.c
 void	read_input(t_input *input, int argc, char **argv);
 void	check_input_for_numbers(int argc, char **argv);
 
+// init.c
+void	init_mutexes(t_mutex *mutexes);
+int	init_party(t_party *party, t_input *input, t_mutex *mutexes);
+
+// time.c
+int	get_time_to_print(int meet);
+int	get_time(void);
+
 // error.c
-int	error(char c);
+int	error(int error);
 
 #endif

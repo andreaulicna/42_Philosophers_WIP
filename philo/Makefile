@@ -6,7 +6,7 @@
 #    By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 13:21:58 by aulicna           #+#    #+#              #
-#    Updated: 2023/12/25 18:13:53 by aulicna          ###   ########.fr        #
+#    Updated: 2023/12/27 15:11:49 by aulicna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,8 @@ NAME = philo
 
 SRC = src/main.c \
 		src/input.c \
+		src/init.c \
+		src/time.c \
 		src/error.c
 
 OBJ = $(SRC:.c=.o)
