@@ -6,34 +6,23 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 22:05:19 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/28 22:58:21 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../incl/philosophers.h"
 
-void	delay(int delay_by)
-{
-	int end_delay_at;
-
-	end_delay_at = get_time() + delay_by;
-	while (get_time() < end_delay_at)
-		usleep(1); 
-//	unsigned long	start_time;
-//
-//	start_time = get_time();
-//	while (get_time() - start_time < (unsigned long)delay_by)
-//		usleep(10);
-}
-
 void	only_one_philo(t_input *input)
 {
-	int	timestamp;
-	
-	delay(input->time_to_die);
-	//usleep(input->time_to_sleep * 1000);
-    timestamp = get_time_to_print(input->meet);
-	printf("%-5i %-1d %s\n", timestamp, 1, get_state_change(DIED));
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	printf("%-5i %-1d %s\n", get_time_to_print(input->meet), 1,
+		get_state_change(LEFT_FORK));
+	usleep(input->time_to_die * 1000);
+	gettimeofday(&now, NULL);
+	printf("%-5i %-1d %s\n", get_time_to_print(input->meet), 1,
+		get_state_change(DIED));
 	exit(0);
 }
 
@@ -43,10 +32,32 @@ void	philo_sleep(t_philo *philo)
 	delay(philo->input->time_to_sleep);
 }
 
-void	philo_think(t_philo *philo)
+void	philo_think(t_philo *philo, int log)
 {
-	log_state_change(philo, THINK);
-	philo->alive = 1;
+	time_t	time_to_check;
+	time_t	time_to_think;
+
+    time_to_check = (philo->input->time_to_die - (get_time() - philo->last_meal)
+		- philo->input->time_to_eat) / 2;
+	if (time_to_check > 500)
+		time_to_think = 200;
+	else
+		time_to_think = 1;
+	if (log)
+		log_state_change(philo, THINK);
+	delay(time_to_think);
+}
+
+int	continue_run_party(t_philo *philo)
+{
+	int	signal;
+
+	signal = 1;
+	pthread_mutex_lock(&philo->mutexes->party_on);
+	if (!philo->input->party_on)
+		signal = 0;
+	pthread_mutex_unlock(&philo->mutexes->party_on);
+	return (signal);
 }
 
 void	philo_eat(t_philo *philo)
@@ -58,6 +69,8 @@ void	philo_eat(t_philo *philo)
 	log_state_change(philo, EAT);
 	philo->last_meal = get_time();
 	delay(philo->input->time_to_eat);
+	if (continue_run_party(philo))
+		philo->meals_count += 1;
 	pthread_mutex_unlock(&philo->mutexes->forks[philo->left_fork]);
 	pthread_mutex_unlock(&philo->mutexes->forks[philo->right_fork]);
 }
@@ -65,21 +78,41 @@ void	philo_eat(t_philo *philo)
 void	*run_party(void *param)
 {
 	t_philo	*philo;
-	int	i;
 
 	philo = (t_philo *) param;
 	if (philo->input->must_eat == 0)
-		return (NULL);
-	philo->last_meal = philo->input->meet;
-	if (philo->id % 2 == 0)
-		philo_eat(philo);
-	i = 0;
-	while (philo->alive != 1)
+		return ;
+	if (philo->id % 2 != 0)
+		philo_think(philo, 0);
+	while (continue_run_party(philo))
 	{
-		philo_think(philo);
 		philo_eat(philo);
 		philo_sleep(philo);
-		i++;
+		philo_think(philo, 1);
+	}
+	return (NULL);
+}
+
+int	must_close_party(t_party *party)
+{
+	return (100);	
+}
+
+void	*close_party(void *param)
+{
+	t_party	*party;
+
+	party = (t_party *) param;
+	if (party->input->must_eat == 0)
+		return ;
+	pthread_mutex_lock(&party->mutexes->party_on);
+	party->input->party_on = 1;
+	pthread_mutex_unlock(&party->mutexes->party_on);
+	while (1)
+	{
+		if (must_close_party(party))
+			return (NULL);
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -89,32 +122,32 @@ int	start_party(t_party *party)
 	int	i;
 
 	i = 0;
-	party->input->meet = get_time();
 	while(i < party->input->num_philos)
 	{
-		party->philos[i]->last_meal = get_time();
+		party->philos[i]->last_meal = party->input->meet;
 		if (pthread_create(&party->philos[i]->thread, NULL, &run_party,
 				party->philos[i]))
 			return (error(ERROR_THREAD, party));
 		i++;
 	}
-//	if (pthread_create(&party->thread, NULL, &close_party, party))
-//			return (error(ERROR_THREAD, party));
+	if (pthread_create(&party->thread, NULL, &close_party, party))
+			return (error(ERROR_THREAD, party));
 	return (EXIT_SUCCESS);
 }
 
 int handle_party(t_party *party)
 {
-	int	j;
+	int	i;
 
-	start_party(party);
-	j = 0;
-	while (j < party->input->num_philos)
+	if(start_party(party))
+		return (EXIT_FAILURE);
+	i = 0;
+	while (i < party->input->num_philos)
 	{
-		pthread_join(party->philos[j]->thread, NULL);
-		j++;
+		pthread_join(party->philos[i]->thread, NULL);
+		i++;
 	}
-	pthread_mutex_destroy(&party->mutexes->log);
+	pthread_join(party->thread, NULL);
 	return (EXIT_SUCCESS);
 }
 
@@ -134,7 +167,8 @@ int	main(int argc, char **argv)
 			return (EXIT_FAILURE);
 		if (init_party(&party, &input, &mutexes))
 			return (EXIT_FAILURE);
-		handle_party(&party);
+		if (handle_party(&party))
+			return (EXIT_FAILURE);
 		free_party(&party);
 	}
 	else

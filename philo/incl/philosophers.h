@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 22:02:30 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/28 21:41:41 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,19 @@ typedef enum s_state
 typedef struct s_input
 {
 	int	num_philos;
-	int	time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
 	int	must_eat;
-	int		meet;
+	int	meet;
+	int	party_on;
 } t_input;
 
 typedef struct s_mutex
 {
 	pthread_mutex_t	log;
 	pthread_mutex_t *forks;
+	pthread_mutex_t party_on;
 }	t_mutex;
 
 typedef struct s_philo
@@ -90,7 +92,7 @@ char    *get_state_change(t_state state);
 // time.c
 int	get_time(void);
 int	get_time_to_print(int meet);
-//unsigned long	get_time(void);
+void	delay(int delay_by);
 
 // error.c
 int	error(int error, t_party *party);

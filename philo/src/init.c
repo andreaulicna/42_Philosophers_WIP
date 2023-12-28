@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 14:36:07 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 21:23:03 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/28 21:25:14 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	init_mutexes(t_mutex *mutexes, int num_philos)
     int i;
 
 	if (pthread_mutex_init(&mutexes->log, NULL))
+        return (error(ERROR_MUTEX, NULL));
+	if (pthread_mutex_init(&mutexes->party_on, NULL))
         return (error(ERROR_MUTEX, NULL));
     mutexes->forks = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t) * num_philos);
     if (!mutexes->forks)
