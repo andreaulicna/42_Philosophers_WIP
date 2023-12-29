@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 14:36:07 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 13:54:40 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 17:20:22 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	init_mutexes(t_mutex *mutexes, int num_philos)
     int i;
 
 	if (pthread_mutex_init(&mutexes->log, NULL))
-        return (error(ERROR_MUTEX, NULL));
-	if (pthread_mutex_init(&mutexes->party_on, NULL))
         return (error(ERROR_MUTEX, NULL));
     mutexes->forks = malloc(sizeof(pthread_mutex_t) * num_philos);
     if (!mutexes->forks)
@@ -33,12 +31,10 @@ int	init_mutexes(t_mutex *mutexes, int num_philos)
     return (EXIT_SUCCESS);
 }
 
-int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
+int	init_philos(t_party *party, t_input *input, t_mutex *mutexes)
 {
 	int	i;
 
-	party->input = input;
-	party->mutexes = mutexes;
 	party->philos = (t_philo **) malloc(sizeof(t_philo *) * input->num_philos);
 	if (!party->philos)
 		return (error(ERROR_MALLOC, NULL));
@@ -48,6 +44,8 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
         party->philos[i] = (t_philo *) malloc (sizeof(t_philo));
         if (!party->philos[i])
 		    return (error(ERROR_MALLOC, NULL));
+		party->philos[i]->input = input;
+		party->philos[i]->mutexes = mutexes;
 		party->philos[i]->id = i;
 		party->philos[i]->meals_count = 0;
 		party->philos[i]->last_meal = 0;
@@ -55,11 +53,23 @@ int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
 		party->philos[i]->right_fork = i + 1;
 		if (party->philos[i]->right_fork >= input->num_philos)
 			party->philos[i]->right_fork = 0;
-		party->philos[i]->input = input;
-		party->philos[i]->mutexes = mutexes;
 		if (pthread_mutex_init(&party->philos[i]->philo_lock, NULL))
         	return (error(ERROR_MUTEX, NULL));
+		party->philos[i]->party = party;
 		i++;
 	}
 	return (EXIT_SUCCESS);
 }
+
+int	init_party(t_party *party, t_input *input, t_mutex *mutexes)
+{
+	party->input = input;
+	party->mutexes = mutexes;
+	if (init_philos(party, input, mutexes))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_init(&party->party_on_lock, NULL))
+        return (error(ERROR_MUTEX, NULL));
+	party->party_on = 1;
+	return (EXIT_SUCCESS);
+}
+

@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 15:07:11 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 13:06:34 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 17:02:24 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	delay(t_philo *philo, time_t delay_by)
 	delay_finish = get_time() + delay_by;
 	while (get_time() < delay_finish)
 	{
-        if (!continue_run_party(philo))
+        if (!continue_run_party(philo->party))
             break ;
 		usleep(100);
 	}

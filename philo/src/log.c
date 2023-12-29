@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:28:31 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 13:37:04 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 17:08:04 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,10 @@ char    *get_state_change(t_state state)
 
 void    log_state_change(t_philo *philo, t_state state)
 {
-	if (!continue_run_party(philo))
+	if (!continue_run_party(philo->party))
 		return ;
     pthread_mutex_lock(&philo->mutexes->log);
-	printf("%-5i %-1d %s\n", get_time_to_print(philo->input->meet), 
+	printf("%i %d %s\n", get_time_to_print(philo->input->meet), 
         philo->id + 1, get_state_change(state));
-	if (state == LEFT_FORK)
-		printf("left fork: %d\n", philo->left_fork);
-	else if (state == RIGHT_FORK)
-		printf("right fork: %d\n", philo->right_fork);
     pthread_mutex_unlock(&philo->mutexes->log);
 }

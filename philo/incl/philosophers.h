@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 13:14:46 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 17:00:11 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+
+typedef struct s_party	t_party;
 
 typedef enum s_erors
 {
@@ -44,14 +46,12 @@ typedef struct s_input
 	long	time_to_sleep;
 	int		must_eat;
 	time_t	meet;
-	int		party_on;
 } t_input;
 
 typedef struct s_mutex
 {
 	pthread_mutex_t	log;
 	pthread_mutex_t *forks;
-	pthread_mutex_t party_on;
 }	t_mutex;
 
 typedef struct s_philo
@@ -65,6 +65,7 @@ typedef struct s_philo
 	pthread_mutex_t	philo_lock;
 	t_mutex			*mutexes;
 	t_input			*input;
+	t_party			*party;
 } t_philo;
 
 typedef struct s_party
@@ -73,11 +74,12 @@ typedef struct s_party
 	t_philo		**philos;
 	t_mutex		*mutexes;
 	pthread_t	thread;
-
+	pthread_mutex_t party_on_lock;
+	int		party_on;
 } t_party;
 
 // main.c
-int		continue_run_party(t_philo *philo);
+int	continue_run_party(t_party *party);
 
 // input.c
 void	read_input(t_input *input, int argc, char **argv);

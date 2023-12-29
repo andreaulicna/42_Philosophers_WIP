@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 13:21:38 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 17:00:46 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ void	only_one_philo(t_input *input)
 	exit(0);
 }
 
-int	continue_run_party(t_philo *philo)
+int	continue_run_party(t_party *party)
 {
 	int	signal;
 
 	signal = 1;
-	pthread_mutex_lock(&philo->mutexes->party_on);
-	if (philo->input->party_on == 0)
+	pthread_mutex_lock(&party->party_on_lock);
+	if (party->party_on == 0)
 		signal = 0;
-	pthread_mutex_unlock(&philo->mutexes->party_on);
+	pthread_mutex_unlock(&party->party_on_lock);
 	return (signal);
 }
 
@@ -45,9 +45,12 @@ void	*run_party(void *param)
 	philo = (t_philo *) param;
 	if (philo->input->must_eat == 0)
 		return (NULL);
+	pthread_mutex_lock(&philo->philo_lock);
+	philo->last_meal = philo->input->meet;
+	pthread_mutex_unlock(&philo->philo_lock);
 	if (philo->id % 2 != 0)
 		philo_think(philo, 0);
-	while (continue_run_party(philo))
+	while (continue_run_party(philo->party) != 0)
 	{
 		philo_eat(philo);
 		philo_sleep(philo);
@@ -61,9 +64,9 @@ int	has_died(t_philo *philo)
 	if ((get_time() - philo->last_meal) >= philo->input->time_to_die)
 	{
 		log_state_change(philo, DIED);
-		pthread_mutex_lock(&philo->mutexes->party_on);
-		philo->input->party_on = 0;
-		pthread_mutex_unlock(&philo->mutexes->party_on);
+		pthread_mutex_lock(&philo->party->party_on_lock);
+		philo->party->party_on = 0;
+		pthread_mutex_unlock(&philo->party->party_on_lock);
 		pthread_mutex_unlock(&philo->philo_lock);
 		return (EXIT_SUCCESS);
 	}
@@ -92,9 +95,9 @@ int	must_close_party(t_party *party)
 	}
 	if (must_eat_done == 1 && party->input->must_eat != -1)
 	{
-		pthread_mutex_lock(&party->mutexes->party_on);
-		party->input->party_on = 0;
-		pthread_mutex_unlock(&party->mutexes->party_on);
+		pthread_mutex_lock(&party->party_on_lock);
+		party->party_on = 0;
+		pthread_mutex_unlock(&party->party_on_lock);
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
@@ -107,9 +110,9 @@ void	*close_party(void *param)
 	party = (t_party *) param;
 	if (party->input->must_eat == 0)
 		return (NULL);
-	pthread_mutex_lock(&party->mutexes->party_on);
-	party->input->party_on = 1;
-	pthread_mutex_unlock(&party->mutexes->party_on);
+	pthread_mutex_lock(&party->party_on_lock);
+	party->party_on = 1;
+	pthread_mutex_unlock(&party->party_on_lock);
 	while (1)
 	{
 		if (must_close_party(party))
@@ -126,25 +129,20 @@ int	start_party(t_party *party)
 	i = 0;
 	while(i < party->input->num_philos)
 	{
-		pthread_mutex_lock(&party->philos[i]->philo_lock);
-		party->philos[i]->last_meal = party->input->meet;
-		pthread_mutex_unlock(&party->philos[i]->philo_lock);
 		if (pthread_create(&party->philos[i]->thread, NULL, &run_party,
-				party->philos[i]))
+				party->philos[i]) != 0)
 			return (error(ERROR_THREAD, party));
 		i++;
 	}
-	if (pthread_create(&party->thread, NULL, &close_party, party))
+	if (pthread_create(&party->thread, NULL, &close_party, party) != 0)
 			return (error(ERROR_THREAD, party));
 	return (EXIT_SUCCESS);
 }
 
-int handle_party(t_party *party)
+int end_party(t_party *party)
 {
 	int	i;
 
-	if(start_party(party))
-		return (EXIT_FAILURE);
 	i = 0;
 	while (i < party->input->num_philos)
 	{
@@ -171,8 +169,9 @@ int	main(int argc, char **argv)
 			return (EXIT_FAILURE);
 		if (init_party(&party, &input, &mutexes))
 			return (EXIT_FAILURE);
-		if (handle_party(&party))
+		if (start_party(&party))
 			return (EXIT_FAILURE);
+		end_party(&party);
 		free_party(&party);
 	}
 	else
