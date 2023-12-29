@@ -6,7 +6,7 @@
 #    By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 13:21:58 by aulicna           #+#    #+#              #
-#    Updated: 2023/12/27 21:18:27 by aulicna          ###   ########.fr        #
+#    Updated: 2023/12/29 13:55:12 by aulicna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = philo
 SRC = src/main.c \
 		src/input.c \
 		src/init.c \
+		src/eat_sleep_think.c \
 		src/log.c \
 		src/time.c \
 		src/error.c \
@@ -39,11 +40,10 @@ $(NAME): $(OBJ) $(HEADER)
 	$(GCC) $(CFLAGS) -o $@ $^ -lpthread
 
 clean:
-	@rm -f $(OBJ)
+	rm -f $(OBJ)
 
-fclean:
-	@rm -f $(OBJ)
-	@rm -f $(NAME)
+fclean: clean
+	rm -f $(NAME)
 
 re: fclean all
 

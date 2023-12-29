@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/28 21:43:48 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 13:57:18 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ static long	ft_atoi_custom(const char *nptr)
 	sign = 1;
 	result = 0;
 	while ((7 <= nptr[i] && nptr[i] <= 13) || nptr[i] == 32)
-	{
 		i++;
-	}
 	if (nptr[i] == 45 || nptr[i] == 43)
 	{
 		if (nptr[i] == 45)
@@ -54,7 +52,7 @@ static long	ft_atoi_custom(const char *nptr)
 		}
 		i++;
 	}
-	while (ft_isdigit(nptr[i]))
+	while (ft_isdigit(nptr[i]) && nptr[i])
 	{
 		result = result * 10 + (nptr[i] - '0');
 		i++;
@@ -123,12 +121,12 @@ void	check_input_for_numbers(int argc, char **argv)
 
 void	read_input(t_input *input, int argc, char **argv)
 {
-	input->num_philos = ft_atoi_custom(argv[1]);
+	input->num_philos = 3;
 	input->time_to_die = ft_atoi_custom(argv[2]);
 	input->time_to_eat = ft_atoi_custom(argv[3]);
 	input->time_to_sleep = ft_atoi_custom(argv[4]);
 	if (argc == 6)
-		input->must_eat = ft_atoi_custom(argv[5]);
+		input->must_eat = 3;
 	else
 		input->must_eat = -1;
 	if (input->num_philos < 1 || input->num_philos > 200

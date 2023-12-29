@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:05:29 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/28 21:38:37 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 12:43:29 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void    destroy_mutexes(t_party *party)
     i = 0;
     while (i < party->input->num_philos)
     {
+        pthread_mutex_destroy(&party->philos[i]->philo_lock);
         pthread_mutex_destroy(&party->mutexes->forks[i]);
         i++;
     }

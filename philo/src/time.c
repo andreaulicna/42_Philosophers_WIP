@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 15:07:11 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/28 19:26:51 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/29 13:06:34 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ int	get_time_to_print(int meet)
 	return (get_time() - meet);
 }
 
-void	delay(int delay_by)
+void	delay(t_philo *philo, time_t delay_by)
 {
 	time_t	delay_finish;
 
 	delay_finish = get_time() + delay_by;
 	while (get_time() < delay_finish)
 	{
+        if (!continue_run_party(philo))
+            break ;
 		usleep(100);
 	}
 }
