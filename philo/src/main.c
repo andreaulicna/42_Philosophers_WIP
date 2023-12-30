@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 09:41:15 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 11:06:52 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	continue_run_party(t_party *party)
 void	*run_party(void *param)
 {
 	t_philo	*philo;
+	int		i;
 
 	philo = (t_philo *) param;
 	if (philo->input->must_eat == 0)
@@ -48,13 +49,18 @@ void	*run_party(void *param)
 	pthread_mutex_lock(&philo->philo_lock);
 	philo->last_meal = philo->input->meet;
 	pthread_mutex_unlock(&philo->philo_lock);
-	if (philo->id % 2 != 0)
-		philo_think(philo, 0);
+	if (philo->id % 2)
+	{
+		philo_think(philo);
+		delay(philo->input->time_to_eat);
+	}
+	i = 0;
 	while (continue_run_party(philo->party) != 0)
 	{
 		philo_eat(philo);
 		philo_sleep(philo);
-		philo_think(philo, 1);
+		philo_think(philo);
+		i++;
 	}
 	return (NULL);
 }
@@ -67,7 +73,7 @@ int	has_died(t_philo *philo)
 		pthread_mutex_lock(&philo->party->party_on_lock);
 		philo->party->party_on = 0;
 		pthread_mutex_unlock(&philo->party->party_on_lock);
-		pthread_mutex_unlock(&philo->philo_lock);
+		//pthread_mutex_unlock(&philo->philo_lock);
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:22:36 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 09:32:52 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 11:04:47 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,22 @@ void    change_last_meal_via_mutex(t_philo *philo, unsigned long timestamp)
 void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->mutexes->forks[philo->left_fork]);
+    printf("%d fork locked by #%d\n", philo->left_fork, philo->id + 1);
 	log_state_change(philo, LEFT_FORK);
+    printf("%d fork locked by #%d\n", philo->right_fork, philo->id + 1);
 	pthread_mutex_lock(&philo->mutexes->forks[philo->right_fork]);
 	log_state_change(philo, RIGHT_FORK);
 	log_state_change(philo, EAT);
     change_last_meal_via_mutex(philo, get_time());
+	//philo->last_meal = get_time();
 	delay(philo->input->time_to_eat);
 	if (continue_run_party(philo->party))
-        change_meals_count_via_mutex(philo);
-	pthread_mutex_unlock(&philo->mutexes->forks[philo->right_fork]);
+        // change_meals_count_via_mutex(philo);
+        philo->meals_count++;
 	pthread_mutex_unlock(&philo->mutexes->forks[philo->left_fork]);
+    printf("%d fork unlocked by #%d\n", philo->left_fork, philo->id + 1);
+	pthread_mutex_unlock(&philo->mutexes->forks[philo->right_fork]);
+    printf("%d fork unlocked by #%d\n", philo->right_fork, philo->id + 1);
 }
 
 void	philo_sleep(t_philo *philo)
@@ -61,12 +67,13 @@ long    get_time_to_think(t_philo *philo)
 		return(1);
 }
 
-void	philo_think(t_philo *philo, int log)
+void	philo_think(t_philo *philo)
 {
-	time_t	time_to_think;
-
-    time_to_think = get_time_to_think(philo);
-	if (log)
-		log_state_change(philo, THINK);
-	delay(time_to_think);
+    log_state_change(philo, THINK);
+//	time_t	time_to_think;
+//
+//    time_to_think = get_time_to_think(philo);
+//	if (log)
+//		log_state_change(philo, THINK);
+//	delay(time_to_think);
 }

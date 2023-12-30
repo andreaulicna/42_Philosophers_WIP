@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 09:33:20 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:52:16 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		init_party(t_party *party, t_input *input, t_mutex *mutexes);
 // eat_sleep_think.c
 void	philo_eat(t_philo *philo);
 void	philo_sleep(t_philo *philo);
-void	philo_think(t_philo *philo, int log);
+void	philo_think(t_philo *philo);
 
 // log.c
 void    log_state_change(t_philo *philo, t_state state);
@@ -100,7 +100,6 @@ char    *get_state_change(t_state state);
 
 // time.c
 unsigned long		get_time(void);
-long		get_time_to_print(long meet);
 void	delay(int delay_by);
 
 // error.c

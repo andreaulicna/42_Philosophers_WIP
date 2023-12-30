@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 09:29:59 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 09:53:00 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static long	ft_atoi(const char *nptr)
 {
 	int	i;
 	int	sign;
-	int	result;
+	unsigned long long	result;
 
 	i = 0;
 	sign = 1;

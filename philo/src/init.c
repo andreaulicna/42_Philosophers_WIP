@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 14:36:07 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 17:20:22 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 10:49:11 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ int	init_mutexes(t_mutex *mutexes, int num_philos)
     return (EXIT_SUCCESS);
 }
 
+static void	sort_fork_by_philo(t_philo *philo)
+{
+	philo->left_fork = philo->id;
+	philo->right_fork = (philo->id + 1) % philo->input->num_philos;
+	if (philo->id % 2 != 0)
+	{
+		philo->left_fork= (philo->id + 1) % philo->input->num_philos;
+		philo->right_fork = philo->id;
+	}
+}
+
 int	init_philos(t_party *party, t_input *input, t_mutex *mutexes)
 {
 	int	i;
@@ -49,10 +60,11 @@ int	init_philos(t_party *party, t_input *input, t_mutex *mutexes)
 		party->philos[i]->id = i;
 		party->philos[i]->meals_count = 0;
 		party->philos[i]->last_meal = 0;
-		party->philos[i]->left_fork = i;
-		party->philos[i]->right_fork = i + 1;
-		if (party->philos[i]->right_fork >= input->num_philos)
-			party->philos[i]->right_fork = 0;
+		sort_fork_by_philo(party->philos[i]);
+		//party->philos[i]->left_fork = i;
+		//party->philos[i]->right_fork = i + 1;
+		//if (party->philos[i]->right_fork >= input->num_philos)
+			//party->philos[i]->right_fork = 0;
 		if (pthread_mutex_init(&party->philos[i]->philo_lock, NULL))
         	return (error(ERROR_MUTEX, NULL));
 		party->philos[i]->party = party;
