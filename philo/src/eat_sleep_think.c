@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:22:36 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 17:02:01 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 09:32:52 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ void    change_meals_count_via_mutex(t_philo *philo)
 {
     pthread_mutex_lock(&philo->philo_lock);
     philo->meals_count++;
-	philo->last_meal = get_time() - philo->input->time_to_eat;
     pthread_mutex_unlock(&philo->philo_lock);
 }
 
-void    change_last_meal_via_mutex(t_philo *philo, time_t timestamp)
+void    change_last_meal_via_mutex(t_philo *philo, unsigned long timestamp)
 {
     pthread_mutex_lock(&philo->philo_lock);
 	philo->last_meal = timestamp;
@@ -34,8 +33,8 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->mutexes->forks[philo->right_fork]);
 	log_state_change(philo, RIGHT_FORK);
 	log_state_change(philo, EAT);
-    //change_last_meal_via_mutex(philo, get_time());
-	delay(philo, philo->input->time_to_eat);
+    change_last_meal_via_mutex(philo, get_time());
+	delay(philo->input->time_to_eat);
 	if (continue_run_party(philo->party))
         change_meals_count_via_mutex(philo);
 	pthread_mutex_unlock(&philo->mutexes->forks[philo->right_fork]);
@@ -45,7 +44,7 @@ void	philo_eat(t_philo *philo)
 void	philo_sleep(t_philo *philo)
 {
 	log_state_change(philo, SLEEP);
-	delay(philo, philo->input->time_to_sleep);
+	delay(philo->input->time_to_sleep);
 }
 
 long    get_time_to_think(t_philo *philo)
@@ -69,5 +68,5 @@ void	philo_think(t_philo *philo, int log)
     time_to_think = get_time_to_think(philo);
 	if (log)
 		log_state_change(philo, THINK);
-	delay(philo, time_to_think);
+	delay(time_to_think);
 }

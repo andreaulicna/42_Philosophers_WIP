@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 17:00:46 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 09:41:15 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	only_one_philo(t_input *input)
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	printf("%-5i %-1d %s\n", get_time_to_print(input->meet), 1,
+	printf("%-5lu %-1d %s\n", get_time() - input->meet, 1,
 		get_state_change(LEFT_FORK));
-	usleep(input->time_to_die * 1000);
+	delay(input->time_to_die);
 	gettimeofday(&now, NULL);
-	printf("%-5i %-1d %s\n", get_time_to_print(input->meet), 1,
+	printf("%-5lu %-1d %s\n", get_time() - input->meet, 1,
 		get_state_change(DIED));
 	exit(0);
 }
@@ -61,7 +61,7 @@ void	*run_party(void *param)
 
 int	has_died(t_philo *philo)
 {
-	if ((get_time() - philo->last_meal) >= philo->input->time_to_die)
+	if ((get_time() - philo->last_meal) >= (unsigned long) philo->input->time_to_die)
 	{
 		log_state_change(philo, DIED);
 		pthread_mutex_lock(&philo->party->party_on_lock);
@@ -183,3 +183,50 @@ int	main(int argc, char **argv)
 	}
 	return (EXIT_SUCCESS);
 }
+
+//int main(void)
+//{
+//	unsigned long meet = get_time();
+//	int	delay = 300;
+//	usleep(1000000);
+//
+//	int time_i = get_time();
+////	int time_i_ms = get_time_to_print(meet);
+//	printf("%i\n", time_i);
+//	printf("%li\n", get_time() - meet);
+//
+//	usleep(delay * 1000);
+//	time_i = get_time();
+//	//time_i_ms = get_time_to_print(meet);
+//	printf("%i\n", time_i);
+//	printf("%li\n", get_time() - meet);
+//
+//	time_t time_tt = get_time();
+//	//time_t time_tt_ms = get_time_to_print(meet);
+//	printf("%ld\n", time_tt);
+//	printf("%ld\n", get_time() - meet);
+//
+//	long time_l = get_time();
+////	long time_l_ms = get_time_to_print(meet);
+//	printf("%li\n", time_l);
+//	printf("%li\n", get_time() - meet);
+//
+//	usleep(delay * 1000);
+//	time_l = get_time();
+////	time_l_ms = get_time_to_print(meet);
+//	printf("%li\n", time_l);
+//	printf("%li\n", get_time() - meet);
+//
+//	unsigned long time_u = get_time();
+////	unsigned long time_u_ms = get_time_to_print(meet);
+//	printf("%lu\n", time_u);
+//	printf("%lu\n", get_time() - meet);
+//
+//	usleep(delay * 1000);
+//	time_u = get_time();
+////	unsigned long time_u_ms = get_time_to_print(meet);
+//	printf("%lu\n", time_u);
+//	printf("%lu\n", get_time() - meet);
+//
+//	return (0);
+//}

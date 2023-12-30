@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/29 16:49:46 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 09:29:59 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ static int	ft_isdigit(int c)
  * 
  * @param	nptr	string to convert into a number
 */
-static long	ft_atoi_custom(const char *nptr)
+static long	ft_atoi(const char *nptr)
 {
 	int	i;
 	int	sign;
-	unsigned long long	result;
+	int	result;
 
 	i = 0;
 	sign = 1;
@@ -121,12 +121,12 @@ void	check_input_for_numbers(int argc, char **argv)
 
 void	read_input(t_input *input, int argc, char **argv)
 {
-	input->num_philos = ft_atoi_custom(argv[1]);
-	input->time_to_die = ft_atoi_custom(argv[2]);
-	input->time_to_eat = ft_atoi_custom(argv[3]);
-	input->time_to_sleep = ft_atoi_custom(argv[4]);
+	input->num_philos = ft_atoi(argv[1]);
+	input->time_to_die = ft_atoi(argv[2]);
+	input->time_to_eat = ft_atoi(argv[3]);
+	input->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		input->must_eat = ft_atoi_custom(argv[5]);
+		input->must_eat = ft_atoi(argv[5]);
 	else
 		input->must_eat = -1;
 	if (input->num_philos < 1 || input->num_philos > 200
