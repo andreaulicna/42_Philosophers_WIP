@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:28:31 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 09:29:11 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 21:17:49 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ char    *get_state_change(t_state state)
 
 void    log_state_change(t_philo *philo, t_state state)
 {
-	(void) state;
-	if (!continue_run_party(philo->party))
-		return ;
     pthread_mutex_lock(&philo->mutexes->log);
+	if (!continue_run_party(philo->party))
+    {
+        pthread_mutex_unlock(&philo->mutexes->log);
+		return ;
+    }
 	printf("%lu %d %s\n", get_time() - philo->input->meet, 
         philo->id + 1, get_state_change(state));
     pthread_mutex_unlock(&philo->mutexes->log);

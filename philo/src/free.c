@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:05:29 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 11:07:48 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/30 19:50:16 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,4 @@ void	free_party(t_party *party)
         i++;
     }
 	free(party->philos);
-    printf("tu vo free\n");
 }

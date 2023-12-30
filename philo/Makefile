@@ -6,7 +6,7 @@
 #    By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 13:21:58 by aulicna           #+#    #+#              #
-#    Updated: 2023/12/30 10:58:13 by aulicna          ###   ########.fr        #
+#    Updated: 2023/12/30 20:49:15 by aulicna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ OBJ = $(SRC:.c=.o)
 
 HEADER = incl/philosophers.h
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
-#CFLAGS = -Wall -Werror -Wextra 
+# CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
+CFLAGS = -Wall -Werror -Wextra -g
 
 GCC = gcc
 
