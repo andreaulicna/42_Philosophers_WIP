@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 09:53:00 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/31 16:17:23 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,4 @@ void	read_input(t_input *input, int argc, char **argv)
 			|| input->time_to_die <= 0 || input->time_to_eat <= 0
 			|| input->time_to_sleep <= 0 || input->must_eat <= -2)
 		no_valid_argumets();
-	input->meet = get_time();
 }

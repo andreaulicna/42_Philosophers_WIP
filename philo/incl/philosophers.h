@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 10:52:16 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/01 19:47:28 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_input
 	int	time_to_eat;
 	int	time_to_sleep;
 	int		must_eat;
-	long	meet;
+	unsigned long	meet;
 } t_input;
 
 typedef struct s_mutex
@@ -62,6 +62,7 @@ typedef struct s_philo
 	unsigned long	last_meal;
 	int				left_fork;
 	int				right_fork;
+	int				eating_rn;
 	pthread_mutex_t	philo_lock;
 	t_mutex			*mutexes;
 	t_input			*input;
@@ -100,7 +101,7 @@ char    *get_state_change(t_state state);
 
 // time.c
 unsigned long		get_time(void);
-void	delay(int delay_by);
+void				delay(int delay_by);
 
 // error.c
 int	error(int error, t_party *party);

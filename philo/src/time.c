@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 15:07:11 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/30 21:05:17 by aulicna          ###   ########.fr       */
+/*   Updated: 2023/12/31 14:58:34 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ unsigned long	get_time(void)
 void	delay(int delay_by)
 {
 	//usleep(delay_by * 1000);
-	unsigned long	delay_end;
+	unsigned long	delay_start;
 
-	delay_end = get_time() + (unsigned long) delay_by;
-	while (get_time() < delay_end)
+	delay_start = get_time();
+	while (get_time() - delay_start < (unsigned long) delay_by)
 		usleep(1);
 }
