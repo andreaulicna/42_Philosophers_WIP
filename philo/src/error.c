@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:54:45 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 14:04:27 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 14:30:09 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ static void	ft_putstr_fd(char *s, int fd)
  * @param	error	error encountered
  * @param	party	overall simulation structure
 */
-int	error(int error)
+int	error(int error, t_party *party)
 {
+	if (party)
+		free_party(party);
 	if (error == ERROR_MALLOC)
 		ft_putstr_fd("Error: Encountered memory allocation error.\n", 2);
 	else if (error == ERROR_MUTEX)

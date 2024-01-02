@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 14:04:40 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 14:29:28 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ unsigned long	get_time(void);
 void			delay(int delay_by);
 
 // error.c
-int				error(int error);
+int				error(int error, t_party *party);
 
 // free.c
 void			free_party(t_party *party);
