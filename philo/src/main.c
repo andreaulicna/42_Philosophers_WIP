@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 14:28:02 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 14:30:38 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	start_party(t_party *party)
 	{
 		if (pthread_create(&party->philos[i]->thread, NULL, &run_party,
 				party->philos[i]))
-			return (error(ERROR_THREAD));
+			return (error(ERROR_THREAD, party));
 		pthread_mutex_lock(&party->philos[i]->philo_lock);
 		party->philos[i]->last_meal = party->input->meet;
 		pthread_mutex_unlock(&party->philos[i]->philo_lock);
@@ -42,7 +42,7 @@ static int	start_party(t_party *party)
 	if (party->input->num_philos != 1)
 	{
 		if (pthread_create(&party->thread, NULL, &close_party, party))
-			return (error(ERROR_THREAD));
+			return (error(ERROR_THREAD, party));
 	}
 	return (EXIT_SUCCESS);
 }
