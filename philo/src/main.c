@@ -6,24 +6,24 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 10:20:21 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 13:58:20 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/philosophers.h"
 
-void	only_one_philo(t_input *input)
-{
-	input->meet = get_time();
-	printf("%lu %d %s\n", get_time() - input->meet, 1,
-		get_state_change(LEFT_FORK));
-	delay(input->time_to_die);
-	printf("%lu %d %s\n", get_time() - input->meet, 1,
-		get_state_change(DIED));
-	exit(0);
-}
-
-int	start_party(t_party *party)
+/**
+ * @brief	Starts the simulation by initializing philosopher threads and
+ * setting the last_meal time for each philo to the meet time which is the time
+ * the simulation started.
+ *
+ * If there are more than one philo, the function creates a thread from within
+ * the party struct which monitors all the philo threads.
+ *
+ * @param	party		overall party structure
+ * @return	EXIT_SUCCESS on successful simulation start, EXIT_FAILURE on error
+ */
+static int	start_party(t_party *party)
 {
 	int	i;
 
@@ -39,12 +39,25 @@ int	start_party(t_party *party)
 		pthread_mutex_unlock(&party->philos[i]->philo_lock);
 		i++;
 	}
-	if (pthread_create(&party->thread, NULL, &close_party, party))
-		return (error(ERROR_THREAD, party));
+	if (party->input->num_philos != 1)
+	{
+		if (pthread_create(&party->thread, NULL, &close_party, party))
+			return (error(ERROR_THREAD, party));
+	}
 	return (EXIT_SUCCESS);
 }
 
-int	end_party(t_party *party)
+/**
+ * @brief	Ends the philosopher party by joining threads by joining all 
+ * the threads.
+ * 
+ * If there was a monitoring thread created (only if there is more than one
+ * philo), it also joins that one.
+ *
+ * @param	party		overall party structure
+ * @return	EXIT_SUCCESS on successful simulation start, EXIT_FAILURE on error
+ */
+static int	end_party(t_party *party)
 {
 	int	i;
 
@@ -54,10 +67,22 @@ int	end_party(t_party *party)
 		pthread_join(party->philos[i]->thread, NULL);
 		i++;
 	}
-	pthread_join(party->thread, NULL);
+	if (party->input->num_philos != 1)
+		pthread_join(party->thread, NULL);
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief	Main function for executing the philosopher simulation.
+ *
+ * This function handles the main execution flow of the philosopher simulation
+ * if an acceptable number of paramenters is provided. Otherwise an error
+ * message detailing the correct usage of the program is printed.
+ *
+ * @param	argc	number of command-line arguments
+ * @param	argv	array of command-line arguments
+ * @return	EXIT_SUCCESS if successful, EXIT_FAILURE otherwise.
+ */
 int	main(int argc, char **argv)
 {
 	t_input	input;
@@ -68,8 +93,6 @@ int	main(int argc, char **argv)
 	{
 		check_input_for_numbers(argc, argv);
 		read_input(&input, argc, argv);
-		if (input.num_philos == 1)
-			only_one_philo(&input);
 		if (init_party(&party, &input, &mutexes))
 			return (EXIT_FAILURE);
 		if (start_party(&party))

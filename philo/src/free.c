@@ -6,13 +6,19 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 18:05:29 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 09:42:33 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 13:54:35 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/philosophers.h"
 
-void	destroy_mutexes(t_party *party)
+/**
+ * @brief	Destroys mutexes held in the mutex struct stored within
+ * the overall simulation structure.
+ * 
+ * @param	party	overall simulation structure
+*/
+static void	destroy_mutexes(t_party *party)
 {
 	int	i;
 
@@ -27,6 +33,11 @@ void	destroy_mutexes(t_party *party)
 	pthread_mutex_destroy(&party->party_on_lock);
 }
 
+/**
+ * @brief	Frees the overall simulation structure.
+ * 
+ * @param	party	overall simulation structure
+*/
 void	free_party(t_party *party)
 {
 	int	i;

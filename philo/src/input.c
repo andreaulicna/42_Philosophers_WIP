@@ -6,19 +6,19 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 10:24:24 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 13:56:04 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/philosophers.h"
 
 /**
- * @brief	This function is a function equivalent to isdigit() function
- * written by me. It checks whether the argument is a digit.
+ * @brief	Eequivalent to isdigit() function written by me. It checks whether
+ * the argument is a digit.
  * 
  * @param	c	int to check for being digit
 */
-static int	ft_isdigit(int c)
+static static int	ft_isdigit(int c)
 {
 	if (48 <= c && c <= 57)
 	{
@@ -28,8 +28,8 @@ static int	ft_isdigit(int c)
 }
 
 /**
- * @brief	This function is a function similar to atoi() function written by
- * me. It converts a string into a number.
+ * @brief	Similar to atoi() function written by me. It converts a string
+ * into a number.
  * 
  * @param	nptr	string to convert into a number
 */
@@ -61,10 +61,9 @@ static int	ft_atoi(const char *nptr)
 }
 
 /**
- * @brief	This function prints an error message when invalid arguments
- * are provided to the program.
+ * @brief	Prints an error message when invalid arguments are provided
+ * to the program.
 */
-
 static void	no_valid_argumets(void)
 {
 	printf("Input error: Invalid arguments received.\n\n");
@@ -82,15 +81,16 @@ static void	no_valid_argumets(void)
 }
 
 /**
- * @brief	This function checks whether the provided command-line arguments
- * include only numerical characters. This function is called before
- * the red_input() function to ensure that ft_atoi doesn't mistakenly process
- * an argument that includes other characters following the numerical ones.
+ * @brief	Checks whether the provided command-line arguments include only
+ * numerical characters. 
+ * 
+ * It is called before the red_input() function to ensure that ft_atoi
+ * doesn't mistakenly process an argument that includes other characters
+ * following the numerical ones.
  * 
  * @param	argc
  * @param	argv
 */
-
 void	check_input_for_numbers(int argc, char **argv)
 {
 	int	i;
@@ -111,14 +111,13 @@ void	check_input_for_numbers(int argc, char **argv)
 }
 
 /**
- * @brief	This function reads the comman-line arguments, converts them into
- * numbers and stores them in the input struct.
+ * @brief	Reads the command-line arguments, converts them into numbers and
+ * stores them in the input struct.
  * 
  * @param	input	struct for input
  * @param	argc
  * @param	argv
 */
-
 void	read_input(t_input *input, int argc, char **argv)
 {
 	input->num_philos = ft_atoi(argv[1]);

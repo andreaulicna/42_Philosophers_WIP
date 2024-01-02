@@ -6,13 +6,19 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:54:45 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 09:54:01 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 13:54:39 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/philosophers.h"
 
-void	ft_putstr_fd(char *s, int fd)
+/**
+ * @brief	Prints a string in the specified file descriptor.
+ * 
+ * @param	char*	string to print
+ * @param	fd		file descriptor to print to
+*/
+static void	ft_putstr_fd(char *s, int fd)
 {
 	unsigned int	i;
 
@@ -28,10 +34,14 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
+/**
+ * @brief	Prints an error message based on the error encountered.
+ * 
+ * @param	error	error encountered
+ * @param	party	overall simulation structure
+*/
 int	error(int error, t_party *party)
 {
-	if (party)
-		free_party(party);
 	if (error == ERROR_MALLOC)
 		ft_putstr_fd("Error: Encountered memory allocation error.\n", 2);
 	else if (error == ERROR_MUTEX)

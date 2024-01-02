@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 10:59:50 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 13:58:03 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,10 @@ typedef struct s_party
 int				continue_run_party(t_party *party);
 
 // input.c
-void			read_input(t_input *input, int argc, char **argv);
 void			check_input_for_numbers(int argc, char **argv);
+void			read_input(t_input *input, int argc, char **argv);
 
 // init.c
-int				init_mutexes(t_mutex *mutexes, int num_philos);
 int				init_party(t_party *party, t_input *input, t_mutex *mutexes);
 
 // eat_sleep_think.c
@@ -103,6 +102,7 @@ void			philo_think(t_philo *philo);
 
 // party_run.c
 void			*run_party(void *param);
+int				continue_run_party(t_party *party);
 
 // party_close.c
 void			*close_party(void *param);
