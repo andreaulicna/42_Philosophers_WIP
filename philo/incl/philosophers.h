@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 13:58:03 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 14:04:40 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,13 @@ void			change_last_meal_via_mutex(t_philo *philo);
 
 // log.c
 void			log_state_change(t_philo *philo, t_state state);
-char			*get_state_change(t_state state);
 
 // time.c
 unsigned long	get_time(void);
 void			delay(int delay_by);
 
 // error.c
-int				error(int error, t_party *party);
+int				error(int error);
 
 // free.c
 void			free_party(t_party *party);

@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 13:56:04 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 14:03:50 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * 
  * @param	c	int to check for being digit
 */
-static static int	ft_isdigit(int c)
+static int	ft_isdigit(int c)
 {
 	if (48 <= c && c <= 57)
 	{
