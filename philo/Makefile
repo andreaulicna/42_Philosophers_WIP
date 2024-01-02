@@ -6,7 +6,7 @@
 #    By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 13:21:58 by aulicna           #+#    #+#              #
-#    Updated: 2024/01/01 20:40:53 by aulicna          ###   ########.fr        #
+#    Updated: 2024/01/02 10:36:30 by aulicna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,10 @@ NAME = philo
 SRC = src/main.c \
 		src/input.c \
 		src/init.c \
+		src/party_run.c \
+		src/party_close.c \
 		src/eat_sleep_think.c \
+		src/mutex_change.c \
 		src/log.c \
 		src/time.c \
 		src/error.c \

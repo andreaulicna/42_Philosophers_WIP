@@ -6,11 +6,11 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/31 16:17:23 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 10:24:24 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../incl/philosophers.h"
+#include "../incl/philosophers.h"
 
 /**
  * @brief	This function is a function equivalent to isdigit() function
@@ -33,11 +33,11 @@ static int	ft_isdigit(int c)
  * 
  * @param	nptr	string to convert into a number
 */
-static long	ft_atoi(const char *nptr)
+static int	ft_atoi(const char *nptr)
 {
 	int	i;
 	int	sign;
-	unsigned long long	result;
+	int	result;
 
 	i = 0;
 	sign = 1;
@@ -69,15 +69,15 @@ static void	no_valid_argumets(void)
 {
 	printf("Input error: Invalid arguments received.\n\n");
 	printf("Correct usage: ./philo number_of_philosophers time_to_die "
-			"time_to_eat time_to_sleep " 
-			"[number_of_times_each_philosopher_must_eat]\n\n");
+		"time_to_eat time_to_sleep "
+		"[number_of_times_each_philosopher_must_eat]\n\n");
 	printf("All the input arguments must be numbers. All of them, except "
-			"the number_of_philosophers and "
-			"the number_of_times_each_philosophers_must_eat, must be bigger "
-			"than 0.\n");
+		"the number_of_philosophers and "
+		"the number_of_times_each_philosophers_must_eat, must be bigger "
+		"than 0.\n");
 	printf("The number_of_philosophers must be between 1 and 200.\n");
 	printf("The number_of_times_each_philosophers_must_eat must be bigger or "
-			"equal to 0.\n\n");
+		"equal to 0.\n\n");
 	exit(0);
 }
 
@@ -130,7 +130,7 @@ void	read_input(t_input *input, int argc, char **argv)
 	else
 		input->must_eat = -1;
 	if (input->num_philos < 1 || input->num_philos > 200
-			|| input->time_to_die <= 0 || input->time_to_eat <= 0
-			|| input->time_to_sleep <= 0 || input->must_eat <= -2)
+		|| input->time_to_die <= 0 || input->time_to_eat <= 0
+		|| input->time_to_sleep <= 0 || input->must_eat <= -2)
 		no_valid_argumets();
 }

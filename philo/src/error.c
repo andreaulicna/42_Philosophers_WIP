@@ -6,11 +6,11 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 13:54:45 by aulicna           #+#    #+#             */
-/*   Updated: 2023/12/27 18:01:14 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/02 09:54:01 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../incl/philosophers.h"
+#include "../incl/philosophers.h"
 
 void	ft_putstr_fd(char *s, int fd)
 {
