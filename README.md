@@ -25,7 +25,7 @@
 ```
 ## Check for data races, correct mutex (un)locking and leaks
 ```
-valgrind --tool=helgrind
-valgrind --tool=drd
+valgrind --tool=helgrind # add --fairsched=yes option if taking too long to run
+valgrind --tool=drd # add --fairsched=yes option if taking too long to run
 -fsanitize=thread # compile with
 ```
