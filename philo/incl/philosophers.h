@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 15:17:29 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/01/29 14:37:39 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
-
-# define COLOR_EAT "\033[0;32m" // green
-# define COLOR_SLEEP "\033[0;34m" // blue
-# define COLOR_THINK
-# define COLOR_FORK
-# define COLOR_TIME "\033[0;30m" // black
 
 typedef struct s_party	t_party;
 
