@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:11:02 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/29 14:37:39 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/03/17 15:22:41 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ typedef struct s_party
 int				continue_run_party(t_party *party);
 
 // input.c
-void			check_input_for_numbers(int argc, char **argv);
-void			read_input(t_input *input, int argc, char **argv);
+int				check_input_for_numbers(int argc, char **argv);
+int				read_input(t_input *input, int argc, char **argv);
 
 // init.c
 int				init_party(t_party *party, t_input *input, t_mutex *mutexes);

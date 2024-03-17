@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:03:10 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 14:30:38 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/03/17 15:20:29 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,9 @@ int	main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
-		check_input_for_numbers(argc, argv);
-		read_input(&input, argc, argv);
+		if (!check_input_for_numbers(argc, argv)
+			|| !read_input(&input, argc, argv))
+			return (EXIT_FAILURE);
 		if (init_party(&party, &input, &mutexes))
 			return (EXIT_FAILURE);
 		if (start_party(&party))

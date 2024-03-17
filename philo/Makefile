@@ -6,7 +6,7 @@
 #    By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 13:21:58 by aulicna           #+#    #+#              #
-#    Updated: 2024/01/02 15:40:31 by aulicna          ###   ########.fr        #
+#    Updated: 2024/03/17 15:01:41 by aulicna          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,16 +31,16 @@ HEADER = incl/philosophers.h
 #CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
 CFLAGS = -Wall -Werror -Wextra -g
 
-GCC = gcc
+CC = cc
 
 all: $(NAME)
 	@echo "philo executable ready ✅"
 
 .c.o:
-	$(GCC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ) $(HEADER)
-	$(GCC) $(CFLAGS) -o $@ $^ -lpthread
+	$(CC) $(CFLAGS) -o $@ $^ -lpthread
 
 clean:
 	rm -f $(OBJ)

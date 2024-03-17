@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2024/01/02 14:03:50 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/03/17 15:22:17 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static void	no_valid_argumets(void)
 	printf("The number_of_philosophers must be between 1 and 200.\n");
 	printf("The number_of_times_each_philosophers_must_eat must be bigger or "
 		"equal to 0.\n\n");
-	exit(0);
 }
 
 /**
@@ -91,7 +90,7 @@ static void	no_valid_argumets(void)
  * @param	argc
  * @param	argv
 */
-void	check_input_for_numbers(int argc, char **argv)
+int	check_input_for_numbers(int argc, char **argv)
 {
 	int	i;
 	int	j;
@@ -103,11 +102,15 @@ void	check_input_for_numbers(int argc, char **argv)
 		while (argv[i][j])
 		{
 			if (!ft_isdigit(argv[i][j]))
+			{
 				no_valid_argumets();
+				return (0);
+			}
 			j++;
 		}
 		i++;
 	}
+	return (1);
 }
 
 /**
@@ -118,7 +121,7 @@ void	check_input_for_numbers(int argc, char **argv)
  * @param	argc
  * @param	argv
 */
-void	read_input(t_input *input, int argc, char **argv)
+int	read_input(t_input *input, int argc, char **argv)
 {
 	input->num_philos = ft_atoi(argv[1]);
 	input->time_to_die = ft_atoi(argv[2]);
@@ -131,5 +134,9 @@ void	read_input(t_input *input, int argc, char **argv)
 	if (input->num_philos < 1 || input->num_philos > 200
 		|| input->time_to_die <= 0 || input->time_to_eat <= 0
 		|| input->time_to_sleep <= 0 || input->must_eat <= -2)
+	{
 		no_valid_argumets();
+		return (0);
+	}
+	return (1);
 }
