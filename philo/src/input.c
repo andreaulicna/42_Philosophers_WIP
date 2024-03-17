@@ -6,7 +6,7 @@
 /*   By: aulicna <aulicna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:37:09 by aulicna           #+#    #+#             */
-/*   Updated: 2024/03/17 15:22:17 by aulicna          ###   ########.fr       */
+/*   Updated: 2024/03/17 15:29:58 by aulicna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static int	ft_isdigit(int c)
 static int	ft_atoi(const char *nptr)
 {
 	int	i;
-	int	sign;
-	int	result;
+	long	sign;
+	long	result;
 
 	i = 0;
 	sign = 1;
@@ -57,7 +57,9 @@ static int	ft_atoi(const char *nptr)
 		result = result * 10 + (nptr[i] - '0');
 		i++;
 	}
-	return (result * sign);
+	if (0 <= result && result <= INT_MAX)
+		return (result * sign);
+	return (-2);
 }
 
 /**
